@@ -1,0 +1,52 @@
+alignment bottom_middle
+background yes
+border_width 0
+cpu_avg_samples 2
+default_color steelblue
+default_outline_color aliceblue
+draw_borders no
+draw_graph_borders yes
+draw_outline no
+draw_shades no
+use_xft yes
+xftfont Alfios:size=8
+gap_x 0
+gap_y 0
+minimum_size 1280 0
+maximum_width 1280
+net_avg_samples 2
+no_buffers yes
+out_to_console no
+out_to_stderr no
+extra_newline no
+own_window yes
+own_window_class Conky
+own_window_type override
+own_window_transparent no
+own_window_hints undecorated, below
+stippled_borders 0
+update_interval 3.0
+uppercase no
+use_spacer left
+show_graph_scale no
+show_graph_range no
+format_human_readable yes
+
+color1 green #666666
+color2 green #888888
+color3 green #444444
+
+mpd_host 127.0.0.1
+
+TEXT
+# ${if_mpd_playing} [${mpd_elapsed}/${mpd_length}] ${scroll 35 5 ${mpd_smart}} ${else} \
+${color1}Activity on /dev/sda:${color} ${diskiograph 10,50 000000 ff0000 -t}${endif}
+${color1} ${wireless_essid wlan0}${color}${wireless_link_qual_perc wlan0}%|${addr wlan0}|\
+${color1}eth0 IP:${color}${addr eth0}\
+${alignr}${color1}CPU: ${color} ${cpu}% ${cpubar cpu0 5,50} ${color}| \
+${color1}RAM:${color} $mem/$memmax ${memperc}% ${membar 5,50} | \
+${color1}H:${color}${fs_used /home/adarsh} / ${fs_size /home/adarsh}${color} | \
+${color1}W:${color} ${fs_used /media/Windows7} / ${fs_size /media/Windows7}${color} | \
+${color1}P:${color} ${fs_used /media/Projects} / ${fs_size /media/Projects}${color} | \
+${color1}M:${color} ${fs_used /media/Media} / ${fs_size /media/Media}${color} | \
+${color1}G:${color} ${fs_used /media/General} / ${fs_size /media/General}${color}
