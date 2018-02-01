@@ -1,268 +1,139 @@
-############################################################################################
-#                                                                                          #
-#  .conkyrc (version 1.09)                                                                 #
-#  A clean, simple, yet useful configuration code for conky                                #
-#  Screenshot: http://ubuntuforums.org/attachment.php?attachmentid=240928&d=1365050163     #
-#  Written by Petro Dawg (aka Greg):                                                       #
-#  Last updated on 4/2/13 (version 1.09)                                                   #
-#    > Added calendar                                                                      #
-#    Updated on 4/1/13 (version 1.08)                                                      #
-#    > Ported to my XCFE system                                                            #
-#      - Changed USB check location to begin at sdc1 (was sdb1)                            #
-#      - Deleted CPU2 info (now 1 core system)                                             #
-#      - Deleted Temp info (sensors not compatible)                                        #
-#    > Changed color scheme to Blue and White                                              #
-#    > Limited system update checking to once per hour due to high resource cost of        #
-#      apt-check process                                                                   #
-#    > Edited to correct some text alignment issues                                        #
-#  Updated on 1/4/13 (version 1.07)                                                        #
-#    > Added available sytem update fields                                                 #
-#    > Added router name and signal strength field                                         #
-#    > Changed most of the grep commands to awk                                            #
-#  Updated on 12/30/12 (version 1.06)                                                      #
-#    ] Changed to grey and orange color scheme -later changed-                             #
-#    > revamped fonts, reverted many changes made in last version                          #
-#    ] Added date field -later removed/replace by calendar-                                #
-#  Updated on 12/24/12 (version 1.05)                                                      #
-#    > Changed color scheme to neon -later changed-                                        #
-#    ] Added fonts for Ubuntu symbol and CPU bar numbers -no longer used-                  # 
-#  Updated on 9/14/12 (version 1.04)                                                       #
-#    ] Added MAC and Public IP addresses to output -now deactivated but still in code-     #
-#    > USB output will disappear from Conky when USB drive is ejected                      #
-#  Updated on 9/2/12 (version 1.03)                                                        #
-#    > Made USB file system output read any USB drive reguardless of name.  Supports up to #
-#      three USB drives.  Displays names of each USB drive and memory_used/memory_total    #
-#    > Added more color control                                                            #
-#    > Changed override_utf8_locale value from 'no' to 'yes' (stopped 12.04-3D flashing)   #
-#    > Changed font Ubuntu:bold:size=11 to xftfont Ubuntu:bold:size=11                     #
-#    > Changed no_buffers value from 'no' to 'yes' (fixed ram graph output)                #
-#    > Added degree symbol to temperature output -no longer used-                          # 
-#  Updated on 8/31/12 (version 1.02)                                                       #
-#    > Deleted redundant outputs and adjusted format to make the display more concise.     # 
-#  Updated on 8/26/12 (version 1.01)                                                       #
-#    > Based on source code from http://lonelymachines.org/2012/08/16/simple-conky-config/ #
-#    > This version has been significately modified to meet my needs and reorganized to    #
-#      add clarity for anyone wanting to modify the code further to meet their own needs.  # 
-#                                                                                          #
-#  Displays the following PC information on the Desktop within an embedded window:         #
-#    > Operating System details                                                            #
-#    > Number of available system updates                                                  #
-#    > CPU operating speed                                                                 #
-#    > Individual core usage                                                               #
-#    > Top 3 processes using CPU resources                                                 #
-#    > Total RAM                                                                           #
-#    > Active RAM amount                                                                   #
-#    > Top 3 processes using RAM resources                                                 #
-#    > Root folder size and memory used                                                    #
-#    > Home folder size and memory used                                                    #
-#    > USB drive size and memory used (when attached)                                      #
-#    > Private and Public IP Addresses                                                     #
-#    > Download speed and data Received                                                    #
-#    > Upload speed and data Sent                                                          #
-#    > Monthly Calendar                                                                    #
-#                                                                                          #
-#  Requires installation of:                                                               #
-#    > conky (available in software center)                                                #
-#    ] lm-sensors (available in software center) -not needed in current version-           #
-#                                                                                          #
-#  Additional information and resources:                                                   #
-#    > To run conky at startup, create an empty file in your home folder, name it          #
-#      ".conky-startup.sh" and copy the following 2 lines in it:                           #
-#           !/bin/bash                                                                     #
-#           sleep 15 && conky ;                                                            #
-#      Add the path to the .conky-startup.sh file within Startup Applications.             #
-#    > http://conky.sourceforge.net/                                                       #
-#    > http://www.graphviz.org/doc/info/colors.html                                        #
-#    > http://www.december.com/html/spec/colorhex.html                                     #
-#    > alfios, heydings, monofonto fonts required                                          #
-#    > Save fonts to .fonts folder in home screen                                          #
-#    > To load fonts into Conky after font installation run the following in terminal:     #
-#         fc-cache -fv                                                                     #
-#      then reboot system if needed                                                        #
-#                                                                                          #
-############################################################################################ 
+-- Conky, a system monitor, based on torsmo
+-- 
+-- Any original torsmo code is licensed under the BSD license
+-- 
+-- All code written since the fork of torsmo is licensed under the GPL
+-- 
+-- Please see COPYING for details
+-- 
+-- Copyright (c) 2004, Hannu Saransaari and Lauri Hakkarainen
+-- Copyright (c) 2005-2010 Brenden Matthews, Philip Kovacs, et. al. (see AUTHORS)
+-- All rights reserved.
+-- 
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
 
-#conky performance settings
-  update_interval 3.0
-  total_run_times 0
-  cpu_avg_samples 4
-  no_buffers yes
-  double_buffer yes
-  override_utf8_locale yes
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua
 
-#overall position of conky window
-  alignment top_right
-  gap_x 15
-  gap_y 40
-  minimum_size 100 145
-  maximum_width 300
+conky.config = {
+	-- Use double buffering (eliminates flickering)
+	 double_buffer = true,
+	-- Run conky in the background
+	background = false,
+	-- Update interval in seconds
+	update_interval = 3.0,
+	-- Set to zero to run forever
+	-- total_run_times = 0,
+	-- Subtract file system buffers from used memory
+	-- no_buffers = true,
+	-- Number of samples to take for CPU and network readings
+	cpu_avg_samples = 5,
+	net_avg_samples = 5,
+	-- Use Xft (anti-aliased font and stuff)
+	use_xft = true,
+	font = 'Tahoma:size=9',
+	-- xftalpha = 0.8,
+	uppercase = false,
+	-- Prevent text from moving around while using a mono font
+	use_spacer = 'left',
+	-- Default color and border settings
+	-- default_color = 'white',
+	default_color = 'green',
+	draw_shades = false,
+	draw_outline = false,
+	draw_borders = false,
+	-- Makes conky window transparent
+	own_window = true,
+	own_window_class = 'Conky',
+	 own_window_argb_visual = true,
+	 own_window_argb_value = 50,
+	 own_window_transparent = true,
+	own_window_type = 'desktop',
+	own_window_hints = 'undecorated,below,skip_taskbar,sticky,skip_pager',
+	-- Window size and position
+	minimum_width = 200,
+	minimum_height = 690,
+	maximum_width = 350,
+	alignment = 'top_right',
+    out_to_console = false,
+    out_to_stderr = false,
+    extra_newline = false,
+	gap_y = 0
+    
+}
 
-#overall appearance of conky window
-  own_window yes
-  own_window_type override
-  own_window_transparent yes
-  own_window_hints undecorated,below,skip_taskbar
-  draw_borders no
-  #default text apperance
-  use_xft yes
-  xftalpha 0.9
-  xftfont Alfios:bold:size=10
-  default_color aliceblue #white
-  draw_shades no
-  draw_outline no
-  default_shade_color black
-  default_outline_color black
-  uppercase no
+conky.text = [[
+${font Tahoma:bold:size=9}Информация о системе$font  $alignr ${time}
+${color grey}ОС: $color $alignr ${exec grep 'PRETTY_NAME="' /etc/os-release | sed -e 's/PRETTY_NAME="//' | sed -e 's/"//g'}  
+${color grey}Ядро: $color $alignr $sysname $kernel  
+${color grey}Время работы: $color $alignr $uptime
+${color grey}Процессор: $color $loadavg  $alignr  $freq MHz
+  ${color grey}Ядро1:$color ${cpubar cpu1 7,240} $alignr ${cpu cpu1} %
+  ${color grey}Ядро2:$color ${cpubar cpu2 7,240} $alignr ${cpu cpu2} %
+  ${color grey}Ядро3:$color ${cpubar cpu3 7,240} $alignr ${cpu cpu3} %
+  ${color grey}Ядро4:$color ${cpubar cpu4 7,240} $alignr ${cpu cpu4} %
+  ${color grey}Ядро5:$color ${cpubar cpu5 7,240} $alignr ${cpu cpu5} %
+  ${color grey}Ядро6:$color ${cpubar cpu6 7,240} $alignr ${cpu cpu6} %
+  ${color grey}Ядро7:$color ${cpubar cpu7 7,240} $alignr ${cpu cpu7} %
+  ${color grey}Ядро8:$color ${cpubar cpu8 7,240} $alignr ${cpu cpu8} %
+  ${cpugraph 21,288 } $alignr ${voffset -14} $cpu%
 
-#border around graphs
-  draw_graph_borders yes
+  ${color grey}RAM:$color $alignr  $mem / $memfree / $memmax   
+  ${membar 7,288} $alignr  $memperc%  
+  ${memgraph 21,000 }  
+  ${color grey}SWAP:$color $alignr  $swap / $swapfree / $swapmax  
+  ${swapbar 7,288} $alignr  $swapperc%  
+${color grey}Температура CPU:$color $alignr${acpitemp}°C  
+${color grey}Температура NVIDIA:$color $alignr${execi 60 nvidia-settings -query [gpu:0]/GPUCoreTemp -t}°C  ${nvidia temp}°C  
+${color grey}Температура SSD:$color $alignr${execi 60 hddtemp /dev/sda | awk '{print $3 "   " $4}'}  
+${color grey}Температура HDD:$color $alignr${execi 60 hddtemp /dev/sdb | awk '{print $3 "   " $4}'}  
+${font Tahoma:bold:size=9}Потребление ресурсов$font  
+${color green}Процессор:$color  $alignr $processes proc  / $running_threads threads 
+  ${color green}Имя процесса$alignr PID      CPU%      MEM%$color  
+    ${color FEFEFE}${top name 1} $alignr${top pid 1}   ${top cpu 1}%   ${top mem 1}%$color  
+    ${color EEEEEE}${top name 2} $alignr${top pid 2}   ${top cpu 2}%   ${top mem 2}%$color  
+    ${color DEDEDE}${top name 3} $alignr${top pid 3}   ${top cpu 3}%   ${top mem 3}%$color  
+    ${color CECECE}${top name 4} $alignr${top pid 4}   ${top cpu 4}%   ${top mem 4}%$color  
+    ${color BEBEBE}${top name 5} $alignr${top pid 5}   ${top cpu 5}%   ${top mem 5}%$color  
+    ${color AEAEAE}${top name 6} $alignr${top pid 6}   ${top cpu 6}%   ${top mem 6}%$color  
+    ${color 9E9E9E}${top name 7} $alignr${top pid 7}   ${top cpu 7}%   ${top mem 7}%$color  
+${color green}Память:$color  
+  ${color green}Имя процесса$alignr PID      CPU%      MEM%$color  
+    ${color FEFEFE}${top_mem name 1} $alignr${top_mem pid 1}   ${top_mem cpu 1}%   ${top_mem mem 1}%$color  
+    ${color EEEEEE}${top_mem name 2} $alignr${top_mem pid 2}   ${top_mem cpu 2}%   ${top_mem mem 2}%$color  
+    ${color DEDEDE}${top_mem name 3} $alignr${top_mem pid 3}   ${top_mem cpu 3}%   ${top_mem mem 3}%$color  
+    ${color CECECE}${top_mem name 4} $alignr${top_mem pid 4}   ${top_mem cpu 4}%   ${top_mem mem 4}%$color  
+    ${color BEBEBE}${top_mem name 5} $alignr${top_mem pid 5}   ${top_mem cpu 5}%   ${top_mem mem 5}%$color  
+    ${color AEAEAE}${top_mem name 6} $alignr${top_mem pid 6}   ${top_mem cpu 6}%   ${top_mem mem 6}%$color  
+    ${color 9E9E9E}${top_mem name 7} $alignr${top_mem pid 7}   ${top_mem cpu 7}%   ${top_mem mem 7}%$color  
+${voffset +5}${color green}Диски:$color  
+${execpi 10 /home/yug/mounted.sh}
+#${color grey}SSD $color $alignr${fs_used /} / ${fs_free /} / ${fs_size /}
+#  ${fs_bar 7,288 /} $alignr${fs_used_perc /}%   
+#  ${color grey}/media/yug/D $color $alignr${fs_used /media/yug/D} / ${fs_free /media/yug/D} / ${fs_size /media/yug/D}
+#  ${fs_bar 7,288 /media/yug/D} $alignr${fs_used_perc /media/yug/D}%   
+#  ${color grey} ${exec df -h | grep "/dev/sdc" } $color 
+Disk I/O sda $alignr ${diskio_read sda} / ${diskio_write sda} / ${diskio sda} 
+  ${diskiograph sda 12,000} 
+Disk I/O sdb $alignr ${diskio_read sdb} / ${diskio_write sdb} / ${diskio sdb} 
+  ${diskiograph sdb 12,000} 
+${if_existing /dev/sdc}Disk I/O sdc $alignr ${diskio_read sdc} / ${diskio_write sdc} / ${diskio sdc} 
+  ${diskiograph sdc 12,000} ${endif}
+${if_existing /dev/sdd}Disk I/O sdd $alignr ${diskio_read sdd} / ${diskio_write sdd} / ${diskio sdd} 
+  ${diskiograph sdd 12,000} ${endif}
+${if_existing /proc/net/route enp4s0f1}${color grey}ETH: enp4s0f1 $color  ${addr enp4s0f1} 
+  ${color grey}Скорость загрузки:$color ${downspeed enp4s0f1} $alignr${color grey}Загружено:$color ${totaldown enp4s0f1}  
+  ${downspeedgraph enp4s0f1 12,000 }
+  ${color grey}Скорость отдачи:$color ${upspeed enp4s0f1} $alignr${color grey}Отдано:$color ${totalup enp4s0f1}  
+  ${upspeedgraph enp4s0f1 12,000 } ${endif}
+${if_existing /proc/net/route wlp3s0}${color grey}WiFi wlp3s0: $color  ${addr wlp3s0} $alignr $wireless_essid ${wireless_bitrate wlp3s0} 
+  ${color grey}Скорость загрузки:$color ${downspeed wlp3s0} $alignr${color grey}Загружено:$color ${totaldown wlp3s0}  
+  ${downspeedgraph wlp3s0 12,000 }
+  ${color grey}Скорость отдачи:$color ${upspeed wlp3s0} $alignr${color grey}Отдано:$color ${totalup wlp3s0}  
+  ${upspeedgraph wlp3s0 12,000 } ${endif}
+${color grey}Time: $color  ${time} ${time %A} 
+${color grey}Nodename: $color $nodename - $sysname on $machine $alignr conky_ver $conky_version 
 
-#colors 
-  color1 blue #dodgerblue #peru #darkgoldenrod #steelblue #royalblue #dodgerblue #chocolate 
+]]
 
-############################################################################################
-#                                                                                          #
-#  The code below 'TEXT' will control what is displayed by conky:                          #
-#   -> In the interest of clarity, the system outputs are divided into related groups      #
-#      (i.e. all code related to the CPU is in one grouping of adjacent lines while code   #
-#      related to RAM is in another grouping of adjacent lines).  Each group is hereafter  #
-#      refered to as a 'TEXT code block'.                                                  #
-#   -> To best fit your screen, adjust the overall vertical length of the display by       #
-#      adding or deleting empty lines either before or after the TEXT code blocks below.   #
-#                                                                                          #
-############################################################################################ 
-TEXT
-# TEXT code block 1: START 
-############################################################################################
-#                                                                                          #
-#  The first TEXT code block displays operating system information                         #
-#   -> 'Updates Available' displays total updates avaible from all software sources        #
-#      activated in the update manager                                                     #
-#   -> 'Security Updates' displays the number those available updates which are related    #
-#      to system security                                                                  #  
-#                                                                                          #
-############################################################################################
-${outlinecolor}${color1}${font Alfios:bold:size=14}${alignc}${execp lsb_release -d | awk '/Description/ {print $2, $3, $4}'}${outlinecolor}${color}${font}
-${font Alfios:bold:size=10}${sysname}:${alignr}${kernel}
-${font Alfios:size=9}   Updates Available:${alignr}${execi 3600 /usr/lib/update-notifier/apt-check --human-readable | awk '/can/ {print $1}'}   
-   Security Updates:${alignr}${execi 3600 /usr/lib/update-notifier/apt-check --human-readable | awk '/are/ {print $1}'}   ${font}
-# TEXT code block 1: END
-
-# TEXT code block 2: START 
-############################################################################################
-#                                                                                          #
-#  The second TEXT code block displays CPU information                                     #
-#   -> Temperature displayed is the PCI Adapter temp1 output on same line as 'high' output #
-#   -> Requires the installation of lm-sensors to work:  sudo apt-get lm-sensors           #
-#   -> After installation run:  sensors-detect      (answer yes to all)                    #
-#   -> Run 'sensors' in terminal to determine which line needs grep & which columns        #
-#      needs to be cut.                                                                    #
-#   -> Replace:  ${cpubar cpu1 5} with ${cpugraph cpu1 FFFF00 FF0000} to change to graph   #
-#      output of CPU1 usage.                                                               #
-#   -> 'FFFF00' and 'FF0000' are HEX color codes and can be replaced with whatever colors  #
-#      you like.  Goto www.graphviz.org/doc/info/colors.html for color information (hold   #
-#      mouse over color to see HEX code for that color).                                   #
-#   -> Add % use outputs for cores by adding the following line:                           #
-#           Core '#': ${alignr}${cpu cpu'#'}%                                              #
-#      (repeat for each additional core up to the total number of cores in the system)     #      
-#      (replace each '#' with the number of the core (i.e. 3 or 4))                        #
-#                                                                                          #
-############################################################################################
-CPU Speed: ${alignr}${freq}MHz Usage: ${cpu}%
-# ${outlinecolor black}${color1}${cpubar cpu1 5}${outlinecolor}${color}
-${outlinecolor black}${color1}${cpugraph cpu1 FFFF00 FF0000}${outlinecolor}${color}
-${font Alfios:size=9}   ${top name 1} ${alignc}${top pid 1}${alignr}${top cpu 1}   
-${font Alfios:size=9}   ${top name 2} ${alignc}${top pid 2}${alignr}${top cpu 2}   
-${font Alfios:size=9}   ${top name 3} ${alignc}${top pid 3}${alignr}${top cpu 3}   ${font}
-# TEXT code block 2: END
- 
-# TEXT code block 3: START
-############################################################################################
-#                                                                                          #
-#  Third TEXT code block displays RAM information:                                         #
-#   -> Replace ${membar 10} with ${memgraph FFFF00 FF0000} to change to graph output of    #
-#      RAM usage. (I did not find this very useful as RAM usage is usually fairly steady   #
-#      on my system.)                                                                       #
-#                                                                                          #
-############################################################################################
-RAM Total: ${alignr}$mem/$memmax Usage: ${memperc}%
-${outlinecolor black}${color1}${memgraph FFFF00 FF0000}${outlinecolor}${color}
-${font Alfios:size=9}   ${top_mem name 1} ${alignc}${top_mem pid 1}${alignr}${top_mem mem 1}   
-${font Alfios:size=9}   ${top_mem name 2} ${alignc}${top_mem pid 2}${alignr}${top_mem mem 2}   
-${font Alfios:size=9}   ${top_mem name 3} ${alignc}${top_mem pid 3}${alignr}${top_mem mem 3}   ${font}
-# TEXT code block 3: END
-
-# TEXT code block 4: START
-############################################################################################
-#                                                                                          #
-#  Fourth TEXT code block displays Filesystem information:                                 #
-#   -> The USB information is specific to the USB drive settings on my computer (i.e. my   #
-#      1st USB mounts at /dev/sdb1). Run 'df' in terminal to determine location of drives. #
-#   -> To make conky display correctly the cut locations for sdb1, sdc1, sdd1, & sdc may   #
-#      need to be adjusted.                                                                #
-#                                                                                          #
-############################################################################################
-Swap: ${color}${alignr}$swap/$swapmax
-${outlinecolor black}${color1}${swapbar 5}${outlinecolor}${color}
-
-Root: ${alignr}${fs_used /} / ${fs_size /}
-${outlinecolor black}${color1}${fs_bar 5 /}${outlinecolor}${color}
-#${if_existing  /dev/sda1}
-Home: ${alignr}${fs_used /home/adarsh} / ${fs_size /home/adarsh}
-${outlinecolor black}${color1}${fs_bar 5 /home/adarsh}${outlinecolor}${color}
-#${if_existing  /dev/sdc1}
-Windows: ${alignr}${fs_used /media/Windows7} / ${fs_size /media/Windows7}
-${outlinecolor black}${color1}${fs_bar 5 /media/Windows7}${outlinecolor}${color}
-#${if_existing  /dev/sda3}
-Projects: ${alignr}${fs_used /media/Projects} / ${fs_size /media/Projects}
-${outlinecolor black}${color1}${fs_bar 5 /media/Projects}${outlinecolor}${color}
-#${if_existing  /dev/sda5}
-Media: ${alignr}${fs_used /media/Media} / ${fs_size /media/Media}
-${outlinecolor black}${color1}${fs_bar 5 /media/Media}${outlinecolor}${color}
-#${if_existing  /dev/sda6}
-General: ${alignr}${fs_used /media/General} / ${fs_size /media/General}
-${outlinecolor black}${color1}${fs_bar 5 /media/General}${outlinecolor}${color}#${if_existing  /media/Media}
-#${execp df -H | grep 'sdc1' | cut -c56-66}:${alignr}${execp df -H | awk '/sdc1/ {print $3, "/", $2}'}${else}${endif}${if_existing  /dev/sdd1}
-#${execp df -H | grep 'sdd1' | cut -c56-66}:${alignr}${execp df -H | awk '/sdd1/ {print $3, "/", $2}'}${else}${endif}${if_existing  /dev/sde1}
-#${execp df -H | grep 'sde1' | cut -c56-66}:${alignr}${execp df -H | awk '/sde1/ {print $3, "/", $2}'}${else}${endif}
-# TEXT code block 4: END
-
-# TEXT code block 5: START
-############################################################################################
-#                                                                                          #
-#  Fith TEXT code block displays Network information:                                      #
-#   -> A graphical output of download information can be displayed by adding the following #
-#      line of code:                                                                       #
-#      ${color2}${downspeedgraph wlan0 FFFF00 FF0000}${color}                              #
-#   -> A graphical output of upload information can be displayed by adding the following   #
-#      line of code:                                                                       #
-#      ${color2}${upspeedgraph wlan0 FFFF00 FF0000}${color}                                #
-#   -> 'FFFF00' and 'FF0000' are HEX color codes and can be replaced with whatever colors  #
-#      you like.  Goto www.graphviz.org/doc/info/colors.html for color information (hold   #
-#      mouse over color to see HEX code for that color). ifconfig -a                       #
-#                                                                                          #
-############################################################################################
-${outlinecolor black}${color1}${font Heydings Icons:size=8}R${font}${color} ${wireless_essid wlan0}${alignr}${wireless_link_qual_perc wlan0}%
-#${outlinecolor black}${color1}${wireless_link_bar 4 wlan0}${outlinecolor}${color}
-wlan0 IP:${alignr}${addr wlan0}
-#Public IP:${alignr}${pre_exec wget -O - http://ip.tupeux.com | tail}
-#MAC:${alignr}${wireless_ap wlan0}
-${outlinecolor black}${color1}${font Heydings Icons:bold:size=8}d${outlinecolor}${color}${font Alfios:size=9} ${downspeed wlan0}/s${alignr}${totaldown wlan0}   
-${outlinecolor black}${color1}${font Heydings Icons:bold:size=8}u${outlinecolor}${color}${font Alfios:size=9} ${upspeed wlan0}/s${alignr}${totalup wlan0}  
-
-${outlinecolor black}${color1}${font Heydings Icons:size=10}3${font}${color} ${font}${color}Ethernet
-eth0 IP:${alignr}${addr eth0}
-${outlinecolor black}${color1}${font Heydings Icons:bold:size=8}d${outlinecolor}${color}${font Alfios:size=9} ${downspeed eth0}/s${alignr}${totaldown eth0}   
-${outlinecolor black}${color1}${font Heydings Icons:bold:size=8}u${outlinecolor}${color}${font Alfios:size=9} ${upspeed eth0}/s${alignr}${totalup eth0}   
-# TEXT code block 5: END
-
-# TEXT code block 6: START
-############################################################################################
-#                                                                                          #
-#  Sixth TEXT code block displays a Calendar:                                              #
-#   -> Calendar requires use of a mono font for proper spacing of numbers and leters       #
-#                                                                                          #
-############################################################################################
-#${alignc}${outlinecolor black}${color1}${font Heydings Icons:size=10}c${font}${color} ${execpi 600 date +"%B"}  ${execpi 600 date +"%Y"}${color}${font Monofonto:size=10}
-#${execpi 600 DJS=`date +%_d`; cal -h | sed '1d' | sed s/"$DJS"'\b'/'${font Monofonto:bold:size=10}${outlinecolor}${color1}'"$DJS"'${outlinecolor}${font Monofonto:size=10}${color}'/}$font
-## TEXT code block 6: END
